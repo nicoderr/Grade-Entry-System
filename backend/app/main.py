@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from . import models, schemas, crud
 from .database import get_db
+from .constants import UserRole, ADMIN_ONLY, TEACHER_AND_ADMIN, STUDENT_ONLY
 
 app = FastAPI(title="Grade Entry System API")
 
@@ -49,7 +50,7 @@ def list_students(user_id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    check_permission(user, ['admin', 'teacher'])
+    check_permission(user, TEACHER_AND_ADMIN)
     
     return crud.get_all_students(db)
 
@@ -57,7 +58,7 @@ def list_students(user_id: int, db: Session = Depends(get_db)):
 @app.get("/api/grades/my-grades", response_model=schemas.StudentGradesResponse)
 def get_my_grades(user_id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.user_id == user_id).first()
-    if not user or user.role != 'student':
+    if not user or user.role != UserRole.STUDENT:
         raise HTTPException(status_code=403, detail="Only students can view their own grades")
     
     grades = crud.get_student_grades(db, user_id)
@@ -73,7 +74,7 @@ def get_student_grades(student_id: int, user_id: int, db: Session = Depends(get_
     user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    check_permission(user, ['admin', 'teacher'])
+    check_permission(user, TEACHER_AND_ADMIN)
     
     student = crud.get_student_by_id(db, student_id)
     if not student:
@@ -98,7 +99,7 @@ def update_student_grade(
     user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    check_permission(user, ['admin', 'teacher'])
+    check_permission(user, TEACHER_AND_ADMIN)
     
     grade = crud.update_grade(db, student_id, subject_id, grade_update.grade_value)
     return {"message": "Grade updated successfully"}
@@ -115,7 +116,7 @@ def add_subject(subject: schemas.SubjectBase, user_id: int, db: Session = Depend
     user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    check_permission(user, ['admin'])
+    check_permission(user, ADMIN_ONLY)
     
     return crud.create_subject(db, subject.subject_name)
 
@@ -126,7 +127,7 @@ def remove_subject(subject_id: int, user_id: int, db: Session = Depends(get_db))
     user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    check_permission(user, ['admin'])
+    check_permission(user, ADMIN_ONLY)
     
     if crud.delete_subject(db, subject_id):
         return {"message": "Subject deleted successfully"}
@@ -139,7 +140,7 @@ def create_user(user_create: schemas.UserCreate, user_id: int=Query(...), db: Se
     user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    check_permission(user, ['admin'])
+    check_permission(user, ADMIN_ONLY)
 
     existing_user = crud.get_user_by_email(db, user_create.email)
     if existing_user:
@@ -154,7 +155,7 @@ def list_users(user_id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
-    check_permission(user, ['admin'])
+    check_permission(user, ADMIN_ONLY)
     
     return db.query(models.User).all()
 
@@ -172,7 +173,7 @@ def delete_user(
     if not admin:
         raise HTTPException(status_code=401, detail="User not found")
 
-    check_permission(admin, ['admin'])
+    check_permission(admin, ADMIN_ONLY)
 
     if not crud.delete_user(db, delete_user_id):
         raise HTTPException(status_code=404, detail="User not found")
