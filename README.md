@@ -31,13 +31,11 @@ The Grade Entry system is a web-based application which enables the users to sec
 
 ## Tech Stack
 
-**Frontend**: React 19, Axios, CSS
+**Frontend**: React 19
 
-**Backend**: FastAPI, SQLAlchemy 2.0, Pydantic
+**Backend**: Python/FastAPI
 
-**Database**: MySQL with PyMySQL driver
-
-**Configuration**: Python-dotenv for environment variables
+**Database**: MySQL
 
 ## Quick Start
 
