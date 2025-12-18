@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { studentsAPI } from '../services/api';
-import { subjectsAPI } from "../services/api";
 import GradeEditor from './GradeEditor';
 
-function AdminView({ user, onLogout }) {
+function TeacherView({onLogout }) {
   const [view, setView] = useState('dashboard');
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [students, setStudents] = useState([]);
-  const [subjects, setSubjects] = useState([]);
 
   useEffect(() => {
     if (view === 'students') {
       loadStudents();
-    } else if (view === 'subjects') {
-      loadSubjects();
     }
   }, [view]);
 
@@ -26,19 +22,24 @@ function AdminView({ user, onLogout }) {
     }
   };
 
-  const loadSubjects = async () => {
-    try {
-      const response = await subjectsAPI.getAll();
-      setSubjects(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  if (view === 'grades' && selectedStudent) {
+  if (view === 'editGrades' && selectedStudent) {
     return (
       <GradeEditor
         student={selectedStudent}
+        onBack={() => {
+          setSelectedStudent(null);
+          setView('students');
+        }}
+        onLogout={onLogout}
+      />
+    );
+  }
+
+  if (view === 'viewGrades' && selectedStudent) {
+    return (
+      <GradeEditor
+        student={selectedStudent}
+        readOnly={true}
         onBack={() => {
           setSelectedStudent(null);
           setView('students');
@@ -84,10 +85,20 @@ function AdminView({ user, onLogout }) {
                       style={{ padding: '6px 12px', fontSize: '12px' }}
                       onClick={() => {
                         setSelectedStudent(student);
-                        setView('grades');
+                        setView('editGrades');
                       }}
                     >
                       Edit Grades
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      style={{ padding: '6px 12px', fontSize: '12px', marginLeft: '10px' }}
+                      onClick={() => {
+                        setSelectedStudent(student);
+                        setView('viewGrades');
+                      }}
+                    >
+                      View Grades
                     </button>
                   </td>
                 </tr>
@@ -115,4 +126,4 @@ function AdminView({ user, onLogout }) {
   );
 }
 
-export default AdminView;
+export default TeacherView;

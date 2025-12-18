@@ -107,10 +107,11 @@ const handleDeleteUser = async (userId) => {
 
   try {
     await usersAPI.delete(userId);
-    loadUsers();
+    await loadUsers();
     alert('User deleted successfully!');
   } catch (err) {
-    alert('Failed to delete user');
+    console.error('Delete user error:', err.response?.data || err.message);
+    alert('Failed to delete user: ' + (err.response?.data?.detail || err.message));
   }
 };
 
@@ -200,10 +201,7 @@ if (view === 'users') {
                     <button
                       className="btn btn-primary"
                       style={{ padding: '6px 12px', fontSize: '12px' }}
-                      onClick={() => {
-                        handleDeleteUser(u.user_id);
-                        setView('users');
-                      }}
+                      onClick={() => handleDeleteUser(u.user_id)}
                     >
                       Remove User
                     </button>

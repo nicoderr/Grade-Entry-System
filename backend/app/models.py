@@ -14,7 +14,7 @@ class User(Base):
     role = Column(Enum('admin', 'teacher', 'student'), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     
-    grades = relationship("Grade", back_populates="student", foreign_keys="Grade.student_id")
+    grades = relationship("Grade", back_populates="student", foreign_keys="Grade.student_id", cascade="all, delete-orphan")
 
 class Subject(Base):
     __tablename__ = "subjects"
@@ -23,7 +23,10 @@ class Subject(Base):
     subject_name = Column(String(100), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     
-    grades = relationship("Grade", back_populates="subject")
+    grades = relationship("Grade",
+                          back_populates="subject",
+                          cascade="all, delete-orphan",
+                            passive_deletes=True)
 
 class Grade(Base):
     __tablename__ = "grades"

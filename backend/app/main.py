@@ -152,16 +152,25 @@ def list_users(user_id: int, db: Session = Depends(get_db)):
     return db.query(models.User).all()
 
 @app.delete("/api/users/{delete_user_id}")
-def delete_user(delete_user_id: int, user_id: int, db: Session = Depends(get_db)):
-    # Verify user is admin
-    user = db.query(models.User).filter(models.User.user_id == user_id).first()
-    if not user:
+def delete_user(
+    delete_user_id: int,
+    user_id: int = Query(..., description="Admin user id"),
+    db: Session = Depends(get_db)
+):
+    admin = db.query(models.User).filter(
+        models.User.user_id == user_id
+    ).first()
+
+    if not admin:
         raise HTTPException(status_code=401, detail="User not found")
-    check_permission(user, ['admin'])
-    
-    if crud.delete_user(db, delete_user_id):
-        return {"message": "User deleted successfully"}
-    raise HTTPException(status_code=404, detail="User not found")
+
+    check_permission(admin, ['admin'])
+
+    if not crud.delete_user(db, delete_user_id):
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return {"message": "User deleted successfully"}
+
 
 @app.get("/")
 def root():
