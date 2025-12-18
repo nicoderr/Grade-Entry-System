@@ -56,8 +56,8 @@ This project supports:
 - Python 3.11
 - Python 3.12
 
-Python 3.13+ (including 3.14) is not supported due to missing prebuilt wheels for
-binary dependencies such as `pydantic-core`.
+#Python 3.13+ (including 3.14) is not supported due to missing prebuilt wheels for
+binary dependencies such as 'pydantic-core'.
 
 # 2. Navigate to backend
 cd grad_entry/backend
