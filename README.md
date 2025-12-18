@@ -37,6 +37,7 @@ The Grade Entry system is a web-based application which enables the users to sec
 
 **Database**: MySQL
 
+```bash
 ## Quick Start
 
 ### Prerequisites
@@ -44,13 +45,15 @@ The Grade Entry system is a web-based application which enables the users to sec
 - Node.js & npm
 - MySQL 5.7+
 
-### Setup Backend
+## Project Setup:
 
-```bash
+# 1.Clone the Repository
 
+git clone https://github.com/nicoderr/Grade-Entry-System
+cd Grade-Entry-System
 #Backend setup
 
-# 1. Supported Python Versions
+# 2. Supported Python Versions
 This project supports:
 - Python 3.10
 - Python 3.11
@@ -58,16 +61,16 @@ This project supports:
 
 #Python 3.13+ (including 3.14) is not supported due to missing prebuilt wheels for binary dependencies such as 'pydantic-core'.
 
-# 2. Navigate to backend
+# 3. Navigate to backend
 cd grad_entry/backend
 
-# 3. Create virtual environment
+# 4. Create virtual environment
 python -m venv venv
 source venv/Scripts/activate   # Git Bash
 # venv\Scripts\activate        # Command Prompt
 # venv\Scripts\Activate.ps1    # PowerShell
 
-# 4. Configure environment variables
+# 5. Configure environment variables
 # Copy .env.example to .env and update with your credentials if .env not avaialble
 cp .env.example .env
 
@@ -78,10 +81,10 @@ cp .env.example .env
 # DB_PORT=3306
 # DB_NAME=grade_system
 
-# 5. Install dependencies
+# 6. Install dependencies
 pip install -r requirements.txt
 
-# 6. Start server
+# 7. Start server
 uvicorn app.main:app --reload --port 8000
 ```
 
