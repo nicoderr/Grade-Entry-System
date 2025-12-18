@@ -47,15 +47,29 @@ The Grade Entry system is a web-based application which enables the users to sec
 ### Setup Backend
 
 ```bash
-# 1. Navigate to backend
-cd backend
 
-# 2. Create virtual environment
+#Backend setup
+
+# 1. Supported Python Versions
+This project supports:
+- Python 3.10
+- Python 3.11
+- Python 3.12
+
+Python 3.13+ (including 3.14) is not supported due to missing prebuilt wheels for
+binary dependencies such as `pydantic-core`.
+
+# 2. Navigate to backend
+cd grad_entry/backend
+
+# 3. Create virtual environment
 python -m venv venv
-venv\Scripts\activate
+source venv/Scripts/activate   # Git Bash
+# venv\Scripts\activate        # Command Prompt
+# venv\Scripts\Activate.ps1    # PowerShell
 
-# 3. Configure environment variables
-# Copy .env.example to .env and update with your credentials
+# 4. Configure environment variables
+# Copy .env.example to .env and update with your credentials if .env not avaialble
 cp .env.example .env
 
 # Then edit .env with your database configuration:
@@ -65,10 +79,10 @@ cp .env.example .env
 # DB_PORT=3306
 # DB_NAME=grade_system
 
-# 4. Install dependencies
+# 5. Install dependencies
 pip install -r requirements.txt
 
-# 5. Start server
+# 6. Start server
 uvicorn app.main:app --reload --port 8000
 ```
 
@@ -313,6 +327,20 @@ kill -9 <PID>  # Kill process
 
 # Import schema error
 mysql -u root -p grade_system < database/schema.sql
+
+# ModuleNotFoundError: pydantic_core._pydantic_core
+An unsupported Python version (3.13+) is being used. `pydantic-core` does not yet
+publish prebuilt wheels for newer Python versions, causing installation or
+runtime failures.
+
+Solution:
+1. Install Python 3.10, 3.11, or 3.12
+2. Recreate the virtual environment
+3. Reinstall dependencies
+
+# fastapi, sqlalchemy orm yellow underline error
+Restart the language server and refresh window
+Upgrade/ downgrade to 3.10.x, 3.11.x, or 3.12.x Python versions.
 ```
 
 ### Frontend Issues
