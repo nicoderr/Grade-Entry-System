@@ -1,25 +1,14 @@
-"""
-Application Constants
 
-Centralized definitions for user roles and permission levels.
-All role strings and role lists should be referenced from this module.
-"""
+#Centralized definitions for user roles and permission groups
 
-# ============================================================================
-# USER ROLES
-# ============================================================================
-
+# user roles
 class UserRole:
-    """User role constants"""
+  # user role constant
     ADMIN = 'admin'
     TEACHER = 'teacher'
     STUDENT = 'student'
 
-
-# ============================================================================
-# PERMISSION GROUPS
-# ============================================================================
-
+# permission groups
 # Admin only
 ADMIN_ONLY = [UserRole.ADMIN]
 
