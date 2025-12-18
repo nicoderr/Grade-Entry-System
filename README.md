@@ -137,13 +137,6 @@ grade_entry/
 **POST /api/auth/login**
 - Description: Authenticate user with credentials
 - Access: Public (no authentication required)
-- Request Body:
-  ```json
-  {
-    "username": "string",
-    "password": "string"
-  }
-  ```
 - Response: User object with user_id, role, username, email, full_name
 - Error Codes: 401 (Invalid credentials)
 - Used by: All users during login
