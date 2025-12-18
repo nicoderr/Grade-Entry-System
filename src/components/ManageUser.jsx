@@ -2,11 +2,13 @@ import React from 'react';
 import { useState } from 'react';
 import {usersAPI } from '../services/api';
 
+// component used by admin to manage users
 function ManageUser({onUserAdded,}) {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('student');
 
+    //handle adding a new user
     const handleAddUser = async (e) => {
         e.preventDefault();
 
@@ -15,6 +17,7 @@ function ManageUser({onUserAdded,}) {
         return;
     }
 try {
+    //call API to create user
     await usersAPI.create({fullName, email, role});
     setFullName('');
     setEmail('');
@@ -27,6 +30,7 @@ try {
     alert ('Failed to add user');
 }
 };
+//render the add user form
     return (
         <div className='card'>
             <h3>Add New User</h3>

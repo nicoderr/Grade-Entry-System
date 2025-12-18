@@ -4,11 +4,15 @@ import GradeEditor from './GradeEditor';
 import { usersAPI } from '../services/api';
 
 function AdminView({ user, onLogout }) {
+
+  // State variables
   const [view, setView] = useState('dashboard');
   const [selectedStudent, setSelectedStudent] = useState(null);
+  // Data lists
   const [students, setStudents] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [users, setUsers] = useState([]);
+  // New item inputs
   const [newSubject, setNewSubject] = useState('');
   const [newFullName, setNewFullName] = useState('');
   const [newUserName, setNewUserName] = useState('');
@@ -16,6 +20,7 @@ function AdminView({ user, onLogout }) {
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserRole, setNewUserRole] = useState('student');
 
+  // load data when view changes
   useEffect(() => {
     if (view === 'students') {
       loadStudents();
@@ -26,6 +31,7 @@ function AdminView({ user, onLogout }) {
     }
   }, [view]);
 
+  // api calls to fetch admin management data
   const loadStudents = async () => {
     try {
       const response = await studentsAPI.getAll();
@@ -53,6 +59,7 @@ function AdminView({ user, onLogout }) {
     }
   };
 
+  // handlers for adding/deleting subjects and users
   const handleAddSubject = async () => {
     if (!newSubject.trim()) return;
     try {
@@ -65,6 +72,7 @@ function AdminView({ user, onLogout }) {
     }
   };
 
+  // Handler to delete a subject
   const handleDeleteSubject = async (subjectId) => {
     if (!window.confirm('Are you sure you want to delete this subject?')) return;
     try {
@@ -76,6 +84,7 @@ function AdminView({ user, onLogout }) {
     }
   };
 
+  // Handler to add a new user
   const handleAddUser = async () => {
   if (!newFullName.trim() || !newUserEmail.trim() || !newUserName.trim() || !newPassword.trim())
     return;
@@ -102,6 +111,7 @@ function AdminView({ user, onLogout }) {
   }
 };
 
+// Handler to delete a user
 const handleDeleteUser = async (userId) => {
   if (!window.confirm('Are you sure you want to delete this user?')) return;
 
@@ -115,6 +125,7 @@ const handleDeleteUser = async (userId) => {
   }
 };
 
+//manage users view
 if (view === 'users') {
   return (
     <div className="container">
@@ -182,6 +193,7 @@ if (view === 'users') {
         </div>
       </div>
 
+{/* User List */}
       <div className="card">
           <table>
             <thead>
@@ -215,6 +227,7 @@ if (view === 'users') {
   );
 }
 
+// Grade editing view
   if (view === 'editGrades' && selectedStudent) {
     return (
       <GradeEditor
@@ -228,6 +241,7 @@ if (view === 'users') {
     );
   }
 
+  // view grades only view
   if(view === 'viewGrades' && selectedStudent) {
     return (
       <GradeEditor
@@ -242,6 +256,7 @@ if (view === 'users') {
     );
   }
 
+  // manage students view
   if (view === 'students') {
     return (
       <div className="container">
@@ -259,6 +274,7 @@ if (view === 'users') {
           <button className="btn btn-primary" onClick={onLogout}>Logout</button>
         </div>
         <div className="card">
+          {/* Student List */}
           <table>
             <thead>
               <tr>
@@ -303,6 +319,7 @@ if (view === 'users') {
     );
   }
 
+  // manage subjects view
   if (view === 'subjects') {
     return (
       <div className="container">
@@ -336,7 +353,7 @@ if (view === 'users') {
         </div>
         <div className="card">
           <h3 style={{ marginBottom: '15px' }}>Current Subjects</h3>
-          <table>
+          <table> {/* Subject List */ }
             <thead>
               <tr>
                 <th>Subject Name</th>
@@ -366,6 +383,7 @@ if (view === 'users') {
   }
   
 
+  // default dashboard view for admin
   return (
     <div className="container">
       <div className="header">

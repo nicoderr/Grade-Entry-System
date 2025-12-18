@@ -6,10 +6,12 @@ function StudentView({ user, onLogout }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  //load student grades
   useEffect(() => {
     loadGrades();
   }, []);
 
+  //function to fetch grades
   const loadGrades = async () => {
     try {
       const response = await gradesAPI.getMyGrades();
@@ -24,6 +26,7 @@ function StudentView({ user, onLogout }) {
   if (loading) return <div className="container">Loading...</div>;
   if (error) return <div className="container"><div className="error">{error}</div></div>;
 
+  //render student grades view
   return (
     <div className="container">
       <div className="header">
@@ -31,6 +34,8 @@ function StudentView({ user, onLogout }) {
         <button className="btn btn-primary" onClick={onLogout}>Logout</button>
       </div>
       <div className="card">
+
+        {/* grades table for student */}
         <table>
           <thead>
             <tr>

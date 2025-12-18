@@ -5,18 +5,22 @@ import TeacherView from './components/TeacherView';
 import AdminView from './components/AdminView';
 
 function App() {
+  // store logged in user info
   const [user, setUser] = useState(null);
 
+  //handle user login and save user info
   const handleLogin = (userData) => {
     localStorage.setItem('user_id', userData.user_id);
     setUser(userData);
   };
 
+  //handle user logout and clear user info
   const handleLogout = () => {
     localStorage.removeItem('user_id');
     setUser(null);
   };
 
+  //render different views based on user role
   if (!user) {
     return <LoginPage onLogin={handleLogin} />;
   }

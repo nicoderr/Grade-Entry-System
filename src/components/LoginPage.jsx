@@ -7,6 +7,7 @@ function LoginPage({ onLogin }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  //handle login submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -22,6 +23,7 @@ function LoginPage({ onLogin }) {
     }
   };
 
+  //render login form
   return (
     <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
       <div className="card">
@@ -57,6 +59,7 @@ function LoginPage({ onLogin }) {
           borderRadius: '4px',
           fontSize: '13px'
         }}>
+          {/* Default credentials info */}
           <strong>Default Credentials:</strong>
           <p>Admin: admin / admin123</p>
           <p>Teacher: teacher1 / teacher123</p>

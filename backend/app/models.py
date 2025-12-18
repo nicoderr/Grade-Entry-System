@@ -3,9 +3,9 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from .database import Base
 
+# user table to store user information
 class User(Base):
     __tablename__ = "users"
-    
     user_id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
@@ -16,6 +16,7 @@ class User(Base):
     
     grades = relationship("Grade", back_populates="student", foreign_keys="Grade.student_id", cascade="all, delete-orphan")
 
+# subject table to store subject information
 class Subject(Base):
     __tablename__ = "subjects"
     
@@ -28,6 +29,7 @@ class Subject(Base):
                           cascade="all, delete-orphan",
                             passive_deletes=True)
 
+# grade table to store grades for students in subjects
 class Grade(Base):
     __tablename__ = "grades"
     

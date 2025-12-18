@@ -6,6 +6,7 @@ function GradeEditor({ student, onBack, onLogout, readOnly }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  // Load student grades
   const loadGrades = useCallback(async () => {
     try {
       const response = await gradesAPI.getStudentGrades(student.user_id);
@@ -17,6 +18,7 @@ function GradeEditor({ student, onBack, onLogout, readOnly }) {
     }
   }, [student.user_id]);
 
+  // Load grades on component mount
   useEffect(() => {
     loadGrades();
   }, [loadGrades]);
@@ -30,6 +32,7 @@ function GradeEditor({ student, onBack, onLogout, readOnly }) {
     });
   };
 
+  //save updated grades
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -50,6 +53,7 @@ function GradeEditor({ student, onBack, onLogout, readOnly }) {
 
   if (loading) return <div className="container">Loading...</div>;
 
+  // Render grade editor
   return (
     <div className="container">
       <div className="header">
@@ -75,7 +79,7 @@ function GradeEditor({ student, onBack, onLogout, readOnly }) {
         </div>
       </div>
       <div className="card">
-        <table>
+        <table> {/* Grade Table */ }
           <thead>
             <tr>
               <th>Subject</th>
